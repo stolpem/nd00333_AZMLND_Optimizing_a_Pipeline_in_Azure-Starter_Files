@@ -51,13 +51,11 @@ def main():
     run.log("Regularization Strength:", np.float(args.C))
     run.log("Max iterations:", np.int(args.max_iter))
 
-    # TODO: Create TabularDataset using TabularDatasetFactory
-    # Data is located at:
-    # "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv"
-
-    ds = TabularDatasetFactory.from_delimited_files('https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv')
+    # Need to change that part - loads existing dataset from datastore, is already cleansed with
+    # above function
     
-    x, y = clean_data(ds)
+    ds = Dataset.get_by_name(ws, 'bankmarketing')
+    # TODO: get x, get y
 
     # TODO: Split data into train and test sets.
 
