@@ -7,6 +7,7 @@ import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 import pandas as pd
+from azureml.core import Workspace, Dataset
 from azureml.core.run import Run
 from azureml.data.dataset_factory import TabularDatasetFactory
 
@@ -50,14 +51,9 @@ def main():
 
     run.log("Regularization Strength:", np.float(args.C))
     run.log("Max iterations:", np.int(args.max_iter))
-
-    # Need to change that part - loads existing dataset from datastore, is already cleansed with
-    # above function
     
+    ws = Workspace.from_config()
     ds = Dataset.get_by_name(ws, 'bankmarketing')
-    # TODO: get x, get y
-
-    # TODO: Split data into train and test sets.
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=20)
 
