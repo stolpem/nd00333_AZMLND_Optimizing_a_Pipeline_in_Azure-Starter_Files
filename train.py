@@ -52,15 +52,15 @@ def main():
     run.log("Regularization Strength:", np.float(args.C))
     run.log("Max iterations:", np.int(args.max_iter))
     
-    ws = Workspace.from_config()
-    ds = Dataset.get_by_name(ws, 'bankmarketing')
+    ds = TabularDatasetFactory.from_delimited_files('https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv')
+    x, y = clean_data(ds)
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=20)
 
     model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
 
     accuracy = model.score(x_test, y_test)
-    run.log("Accuracy", np.float(accuracy))
+    run.log("accuracy", np.float(accuracy))
 
 if __name__ == '__main__':
     main()
