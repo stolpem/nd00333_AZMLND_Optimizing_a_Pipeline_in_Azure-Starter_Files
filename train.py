@@ -55,14 +55,16 @@ def main():
     ds = TabularDatasetFactory.from_delimited_files('https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv')
     x, y = clean_data(ds)
 
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=20)
+    x_fit, x_test, y_fit, y_test = train_test_split(x, y, test_size=0.2, random_state=20)
+    x_train, x_val, y_train, y_val = train_test_split(x_fit, y_fit, test_size=0.2, random_state=5)
 
     model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
 
-    accuracy = model.score(x_test, y_test)
+    accuracy = model.score(x_val, y_val)
     run.log("accuracy", np.float(accuracy))
 
-    joblib.dump(model, './outputs/model.pkl')
+    model_all_data = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_fit, y_fit)
+    joblib.dump(model_all_data, './outputs/model.pkl')
     
 if __name__ == '__main__':
     main()
