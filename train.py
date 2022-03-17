@@ -55,8 +55,8 @@ def main():
     ds = TabularDatasetFactory.from_delimited_files('https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv')
     x, y = clean_data(ds)
 
-    x_fit, x_test, y_fit, y_test = train_test_split(x, y, test_size=0.2, random_state=20)
-    x_train, x_val, y_train, y_val = train_test_split(x_fit, y_fit, test_size=0.2, random_state=5)
+    x_fit, x_test, y_fit, y_test = train_test_split(x, y, test_size=0.2, random_state=20, stratify=y)
+    x_train, x_val, y_train, y_val = train_test_split(x_fit, y_fit, test_size=0.2, random_state=5, stratify=y_fit)
 
     model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
 
