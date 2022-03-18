@@ -87,5 +87,4 @@ For a fair comparison, the best models should be evaluated on an independent tes
 
 ## Proof of cluster clean up
 
-**If you did not delete your compute cluster in the code, please complete this section. Otherwise, delete this section.**
-**Image of cluster marked for deletion**
+The cluster is deleted in the code by calling the `delete()` function on the `aml_compute` instance.
