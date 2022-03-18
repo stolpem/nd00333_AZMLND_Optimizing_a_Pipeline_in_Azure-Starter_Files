@@ -2,12 +2,11 @@ from sklearn.linear_model import LogisticRegression
 import argparse
 import os
 import numpy as np
-from sklearn.metrics import mean_squared_error
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 import pandas as pd
-from azureml.core import Workspace, Dataset
+from azureml.core import Workspace
 from azureml.core.run import Run
 from azureml.data.dataset_factory import TabularDatasetFactory
 
@@ -49,21 +48,30 @@ def main():
 
     run = Run.get_context()
 
+    # Read parameters provided by HyperDrive run
     run.log("Regularization Strength:", np.float(args.C))
     run.log("Max iterations:", np.int(args.max_iter))
     
+    # Download data and clean it
     ds = TabularDatasetFactory.from_delimited_files('https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv')
     x, y = clean_data(ds)
 
+    # Split data into training, validation and test set (not used at this point)
+    # Use stratified sampling to ensure similar fractions of classes in each set
     x_fit, x_test, y_fit, y_test = train_test_split(x, y, test_size=0.2, random_state=20, stratify=y)
     x_train, x_val, y_train, y_val = train_test_split(x_fit, y_fit, test_size=0.2, random_state=5, stratify=y_fit)
 
+    # Fit logistic regression model to data in training set
     model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
 
+    # Determine accuracy of previously fitted model on validation set
     accuracy = model.score(x_val, y_val)
     run.log("accuracy", np.float(accuracy))
 
+    # Fit final logistic regression model to training + validation set
     model_all_data = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_fit, y_fit)
+    
+    # Save model for potential later use
     joblib.dump(model_all_data, './outputs/model.pkl')
     
 if __name__ == '__main__':
