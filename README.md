@@ -57,7 +57,7 @@ A comparison of the models found by HyperDrive and AutoML is difficult, since th
 
 However, a direct comparison of the best model's primary metric seems to suggest that AutoML yields a model with higher accuracy than the best logistic regression model found by HyperDrive. 
 
-Ensembles of classifiers like they are used in AutoML are well-known to yield better performance on many datasets, since a combination of models reduces the chance of overfitting and thereby reduces variance. Furthermore, the ensemble includes classifiers based on methods like gradient boosting or stochastic gradient descent, which can be considered the current state-of-the-art in machine learning due to their proven superior performance on many datasets.
+Using a scaler on the data, like AutoML does, might already increase performance. Moreover, ensembles of classifiers like they are used in AutoML are well-known to yield better performance on many datasets, since a combination of models reduces the chance of overfitting and thereby reduces variance. Furthermore, the ensemble includes classifiers based on methods like gradient boosting or stochastic gradient descent, which can be considered the current state-of-the-art in machine learning due to their proven superior performance on many datasets.
 
 ## Future work
 
